@@ -11,9 +11,7 @@ import org.eclipse.swt.widgets.Display;
 public class Ghost extends BaseElement {
     public Ghost() {
         super();
-        Device device = Display.getCurrent ();
-        Color red = new Color (device, 255, 0, 0);
-        setColor(red);
+        setColor(255, 0, 0);
     }
 
     private int turnToChangeDir = 0;

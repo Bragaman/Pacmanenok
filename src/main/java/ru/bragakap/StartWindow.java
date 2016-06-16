@@ -9,6 +9,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import java.io.IOException;
+
 /**
  * Created by dmitry on 12.01.16.
  */
@@ -52,7 +54,9 @@ public class StartWindow {
         btnCreateServer.setText("Create game server");
         btnCreateServer.addSelectionListener(new SelectionListener() {
             public void widgetSelected(SelectionEvent event) {
+//                btnCreateServer.setText("Waiting players");
                 onBtnCreateServerClicked();
+
             }
             public void widgetDefaultSelected(SelectionEvent event) {}
         });
@@ -63,6 +67,7 @@ public class StartWindow {
             @Override
             public void widgetSelected(SelectionEvent selectionEvent) {
                 onBtnConnectClicked();
+//                btnConnect.setText("Waiting players");
             }
             @Override
             public void widgetDefaultSelected(SelectionEvent selectionEvent) {}
@@ -72,12 +77,12 @@ public class StartWindow {
     /**
      * Создание компогнентов игрового окна
      */
-    private void initGameUI() {
+    private void initGameUI(int poz) {
         preInitUI();
 
         FillLayout fillLayout = new FillLayout();
         startWindow.setLayout(fillLayout);
-        Painter painter = new Painter(startWindow);
+        Painter painter = new Painter(startWindow, poz);
     }
 
     /**
@@ -107,13 +112,20 @@ public class StartWindow {
         for (Control kid : startWindow.getChildren()) {
             kid.dispose();
         }
-        initGameUI();
+        initGameUI(0);
 
         startWindow.pack();
         setSize();
     }
 
-    private void onBtnConnectClicked() {
+    private void onBtnConnectClicked(){
+        for (Control kid : startWindow.getChildren()) {
+            kid.dispose();
+        }
+        initGameUI(1);
+
+        startWindow.pack();
+        setSize();
         // TODO wait asnwer from server and set size and map from widget
     }
 

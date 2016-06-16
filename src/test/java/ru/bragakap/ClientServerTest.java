@@ -1,13 +1,10 @@
 package ru.bragakap;
 
 import java.io.IOException;
-import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 import org.testng.annotations.AfterGroups;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeGroups;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 
@@ -27,7 +24,7 @@ public class ClientServerTest {
             @Override
             public void run() {
                 try {
-                    server.openConnection();
+                    server.openConnection(6789);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -36,7 +33,7 @@ public class ClientServerTest {
 
         thread.start();
         Thread.sleep(100);
-        client.open();
+        client.open("localhost", 6789);
         server.sendMsg("test");
         System.out.print(client.getMsg());
     }
@@ -62,15 +59,19 @@ public class ClientServerTest {
         pacman.setY(42);
 
         Food food = new Food();
+        food.setX(23);
         food.setY(23);
 
         List<BaseElement> list = new ArrayList<>();
 
         list.add(pacman);
         list.add(food);
+        GameInfoDTO info = new GameInfoDTO(true, list);
+        server.sendGameInfo(info);
 
-        server.sendMapInfo(list);
-        assertEquals(list, client.getMap());
+        assertEquals(info, client.getGameInfo());
+        client.sendPacman(pacman);
+        assertEquals(server.getPacmanInfo(), pacman);
     }
 
     @Test
@@ -79,5 +80,11 @@ public class ClientServerTest {
 
         server.sendScore(gameScoreInfoDTO);
         assertEquals(gameScoreInfoDTO, client.getScore());
+    }
+
+    @Test
+    public void testConnection() throws Exception {
+        client.sendMsg("connected");
+        System.out.print(server.getMsg());
     }
 }

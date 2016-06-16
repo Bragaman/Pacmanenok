@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Display;
 public class Aegis extends BaseElement {
     public Aegis() {
         super();
-        setColor(Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
+        setColor(1,1,1);
     }
 
     @Override

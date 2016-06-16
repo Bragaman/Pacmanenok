@@ -3,7 +3,9 @@ package ru.bragakap;
 import java.io.Serializable;
 import java.util.Objects;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * Created by Kapitonenko on 15.01.16.
@@ -12,20 +14,23 @@ public abstract class BaseElement implements Serializable {
     private int x, y;
     private int width, height;
     private int speed;
-    private Color color;
+
+    private int colorR;
+    private int colorG;
+    private int colorB;
+
 
 
     public void paintMe(GC gc) {
-        gc.setBackground(color);
+        Device device = Display.getCurrent();
+        gc.setBackground(new Color (device, colorR, colorG, colorB));
         gc.fillOval(x, y, width, height);
     }
 
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
+    public void setColor(int r, int g, int b) {
+        colorB = b;
+        colorG = g;
+        colorR = r;
     }
 
     public int getSpeed() {
@@ -140,9 +145,6 @@ public abstract class BaseElement implements Serializable {
         y += vy;
     }
 
-    public void paint() {
-        //singleton.paint(image, x, y);
-    }
 
     @Override
     public boolean equals(Object o) {

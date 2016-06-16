@@ -8,10 +8,10 @@ public class EventLooper {
         this.elements = elements;
     }
 
+    public  List<BaseElement> getElements(){
+        return elements;
+    }
     private List<BaseElement> elements;
-
-    private Server server;
-
 
     public void setCountOfPlayers(int countOfPlayers) {
         this.countOfPlayers = countOfPlayers;
@@ -19,8 +19,18 @@ public class EventLooper {
 
     private int countOfPlayers;
 
-    public boolean loop()  {
+    public boolean serverLoop()  {
         int countOfAlivePlayers = 0;
+
+        if (countOfPlayers == 2) {
+            try {
+                elements.set(1, Core.getInstance().getServer().getPacmanInfo());
+                elements.get(1).move();
+            } catch (IOException | ClassNotFoundException e) {
+                return true; //TODO why????
+            }
+        }
+
         for(int j = 0; j < countOfPlayers; j++) {
             Pacman player = (Pacman)elements.get(j);
             if(player.isExist())
@@ -33,40 +43,26 @@ public class EventLooper {
                         elements.remove(i);
                         i--;
                     }
-
                 }
             }
         }
-
+        boolean inGame = true;
         if(countOfAlivePlayers == 0) {
-            return false;
+            inGame = false;
         }
 
         for(BaseElement i : elements) {
             i.move();
         }
-
-        try {
-            elements.set(1, server.getPacmanInfo());
-        } catch (IOException | ClassNotFoundException e) {
-            return true;
+        if (countOfPlayers == 2) {
+            try {
+                System.out.println(elements.size());
+                Core.getInstance().getServer().sendGameInfo(new GameInfoDTO(inGame, elements));
+            } catch (IOException e) {
+                //Проблемы с соединением
+                return false;
+            }
         }
-
-        try {
-            server.sendMapInfo(elements);
-        } catch (IOException e) {
-            //Проблемы с соединением
-            return false;
-        }
-
-        return true;
-    }
-
-    public Server getServer() {
-        return server;
-    }
-
-    public void setServer(Server server) {
-        this.server = server;
+        return inGame;
     }
 }

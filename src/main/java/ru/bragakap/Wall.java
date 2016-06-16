@@ -11,9 +11,7 @@ import org.eclipse.swt.widgets.Display;
 
 public class Wall extends BaseElement {
     public Wall() {
-        Device device = Display.getCurrent ();
-        Color red = new Color (device, 144, 0, 144);
-        setColor(red);
+        setColor(144, 0, 144);
     }
 
     @Override
@@ -32,7 +30,7 @@ public class Wall extends BaseElement {
 
     @Override
     public void paintMe(GC gc) {
-        gc.setBackground(getColor());
+        super.paintMe(gc);
         gc.fillRectangle(getX(), getY(), getWidth(), getHeight());
     }
 }

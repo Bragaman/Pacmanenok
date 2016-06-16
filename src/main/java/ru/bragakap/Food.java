@@ -12,9 +12,7 @@ public class Food extends BaseElement {
     }
 
     public void setDisplayColor() {
-        Device device = Display.getCurrent();
-        Color red = new Color (device, 255, 144, 0);
-        setColor(red);
+        setColor(255, 144, 0);
     }
 
     @Override

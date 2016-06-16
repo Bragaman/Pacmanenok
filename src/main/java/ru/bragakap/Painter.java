@@ -7,6 +7,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.*;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -25,23 +26,31 @@ public class Painter extends Canvas {
     private Display display;
 
     private boolean inGame;
+    private boolean waitConnection;
     private Runnable runnable;
     private List<BaseElement> elements;
 
-    public Painter(Shell shell) {
-        super(shell, SWT.NULL);
-        this.shell = shell;
 
+    private int poz ;
+
+    public Painter(Shell shell, int poz)  {
+        super(shell, SWT.NULL);
+
+        waitConnection = true;
+        inGame = false;
+
+        this.shell = shell;
+        this.poz = poz;
         initPainter();
 
-        startGame();
+        startGame(poz);
 
     }
 
     /**
      * Добавление слушателей и инициализация общих параметров
      */
-    private void initPainter() {
+    private void initPainter(){
         display = shell.getDisplay();
         addListener(SWT.Paint, this::doPainting);
         addListener(SWT.KeyDown, this::onKeyDown);
@@ -50,40 +59,55 @@ public class Painter extends Canvas {
         });
     }
 
+
     /**
      * Запуск игры
      */
-    private void startGame() {
-        int x = 25;
-        int y = 20;
-        StartWindow.WIDTH  = x * MapGenerator.SIZE_OBJ;
-        StartWindow.HEIGHT = y * MapGenerator.SIZE_OBJ;
-        initGame(MapGenerator.generateMap(1, 8, x, y));
-    }
-
-    /**
-     * Инит самой игры
-     * @param elements список элементов в игре
-     */
-    private void initGame(List<BaseElement> elements) {
+    private void startGame(int poz) {
+        StartWindow.WIDTH  = Core.xCount * MapGenerator.SIZE_OBJ;
+        StartWindow.HEIGHT = Core.yCount * MapGenerator.SIZE_OBJ;
         forceFocus();
-        this.elements = elements;
-        EventLooper eventLooper = new EventLooper();
-        eventLooper.setElements(this.elements);
-        eventLooper.setCountOfPlayers(1);
+        waitConnection = true;
         inGame = true;
+        startConnections();
         runnable = new Runnable() {
             @Override
             public void run() {
+                if (!waitConnection) {
+                    if (inGame) {
+                        try {
+                            GameInfoDTO info = Core.getInstance().makeStepAction();
+                            elements = info.getElements();
+                            inGame = info.isInGame();
 
-                if(inGame) {
-                   inGame = eventLooper.loop();
+                        } catch (IOException | ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
                 display.timerExec(DELAY, this);
                 redraw();
             }
         };
         display.timerExec(DELAY, runnable);
+
+        inGame = true;
+        redraw();
+
+    }
+
+    private void startConnections() {
+        try {
+            Core.getInstance().initMultGame(poz);
+            System.out.println("finish init multGame settings");
+//            GameInfoDTO info = Core.getInstance().makeStepAction();
+            elements = Core.getInstance().getElements(poz);
+            System.out.println("Set start map");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Can start draw");
+        waitConnection = false;
     }
 
     /**
@@ -95,18 +119,18 @@ public class Painter extends Canvas {
         //todo Определить пакмана
 
         if(key == SWT.ARROW_LEFT) {
-            ((Pacman)elements.get(0)).moveLeft();
+            ((Pacman)elements.get(poz)).moveLeft();
         } else if (key == SWT.ARROW_RIGHT) {
-            ((Pacman)elements.get(0)).moveRight();
+            ((Pacman)elements.get(poz)).moveRight();
         } else if (key == SWT.ARROW_UP) {
-            ((Pacman)elements.get(0)).moveUp();
+            ((Pacman)elements.get(poz)).moveUp();
         } else if (key == SWT.ARROW_DOWN) {
-            ((Pacman)elements.get(0)).moveDown();
+            ((Pacman)elements.get(poz)).moveDown();
         }
 
         if(key == SWT.SPACE)
             if(!inGame)
-                startGame();
+                startGame(poz);
 
 
     }
@@ -116,16 +140,19 @@ public class Painter extends Canvas {
      * @param e событие перерисовки
      */
     private void doPainting(Event e) {
+//        System.out.println("paint event");
         GC gc = e.gc;
 
         setBackground(display.getSystemColor(SWT.COLOR_BLACK));
 
         gc.setAntialias(SWT.ON);
 
-        if(inGame) {
+        if (waitConnection) {
+            drawWaitPlayer(e);
+        } else if(inGame) {
             drawObjects(e);
         } else {
-            gameOver(e);
+            drawGameOver(e);
         }
     }
 
@@ -140,7 +167,7 @@ public class Painter extends Canvas {
         for (BaseElement element : elements) {
             element.paintMe(gc);
         }
-        int score  = ((Pacman)elements.get(0)).getScore();
+        int score  = ((Pacman)elements.get(poz)).getScore();
         String scoreString = "Score: " + score;
         gc.drawText(scoreString, 5, 5 );
     }
@@ -149,7 +176,7 @@ public class Painter extends Canvas {
      * Отрисовка окончания игры
      * @param e
      */
-    private void gameOver(Event e) {
+    private void drawGameOver(Event e) {
         GC gc = e.gc;
 
         String msg = "Game Over";
@@ -176,7 +203,7 @@ public class Painter extends Canvas {
         display.timerExec(-1, runnable);
     }
 
-    private void waitPlayerUI(Event e) {
+    private void drawWaitPlayer(Event e) {
         GC gc = e.gc;
 
         String msg = "Please wait";

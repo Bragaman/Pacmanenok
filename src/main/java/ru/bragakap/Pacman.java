@@ -16,9 +16,7 @@ public class Pacman extends BaseElement{
     }
 
     public void setDisplayColor() {
-        Device device = Display.getCurrent();
-        Color color =  (device.getSystemColor(SWT.COLOR_YELLOW));
-        setColor(color);
+        setColor(150,150,0);
     }
 
     private int score = 0;
