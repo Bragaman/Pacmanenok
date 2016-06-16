@@ -37,6 +37,8 @@ public class ClientServerTest {
         thread.start();
         Thread.sleep(100);
         client.open();
+        server.sendMsg("test");
+        System.out.print(client.getMsg());
     }
 
     @AfterGroups(groups = "ClientServerTests")

@@ -48,17 +48,25 @@ public class StartWindow {
         FillLayout fillLayout = new FillLayout();
         startWindow.setLayout(fillLayout);
 
-        Button startSingleGame = new Button(startWindow, SWT.PUSH);
-        startSingleGame.setText("Start new single game");
-        startSingleGame.addSelectionListener(new SelectionListener() {
+        Button btnCreateServer = new Button(startWindow, SWT.PUSH);
+        btnCreateServer.setText("Create game server");
+        btnCreateServer.addSelectionListener(new SelectionListener() {
             public void widgetSelected(SelectionEvent event) {
-                onStartSingleGameClicked();
+                onBtnCreateServerClicked();
             }
             public void widgetDefaultSelected(SelectionEvent event) {}
         });
 
-        Button startMultGame = new Button(startWindow, SWT.PUSH);
-        startMultGame.setText("Start new multiple game");
+        Button btnConnect = new Button(startWindow, SWT.PUSH);
+        btnConnect.setText("Connect to server");
+        btnConnect.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent) {
+                onBtnConnectClicked();
+            }
+            @Override
+            public void widgetDefaultSelected(SelectionEvent selectionEvent) {}
+        });
     }
 
     /**
@@ -70,7 +78,6 @@ public class StartWindow {
         FillLayout fillLayout = new FillLayout();
         startWindow.setLayout(fillLayout);
         Painter painter = new Painter(startWindow);
-
     }
 
     /**
@@ -96,7 +103,7 @@ public class StartWindow {
         startWindow.setSize(WIDTH + borW, HEIGHT + borH);
     }
 
-    private void onStartSingleGameClicked() {
+    private void onBtnCreateServerClicked() {
         for (Control kid : startWindow.getChildren()) {
             kid.dispose();
         }
@@ -106,9 +113,12 @@ public class StartWindow {
         setSize();
     }
 
+    private void onBtnConnectClicked() {
+        // TODO wait asnwer from server and set size and map from widget
+    }
+
 
     public static void main(String[] args) {
-
         Display display = new Display();
         StartWindow startWindow = new StartWindow(display);
         display.dispose();

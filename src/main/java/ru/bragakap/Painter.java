@@ -16,6 +16,7 @@ import java.util.List;
 public class Painter extends Canvas {
 
     private static final int DELAY = 8;
+
 //    private final int WIDTH = 900;
 //    private final int HEIGHT = 900;
 
@@ -167,6 +168,33 @@ public class Painter extends Canvas {
 
         gc.drawText(msg, (StartWindow.WIDTH - size.x) / 3, (StartWindow.HEIGHT - size.y) / 4);
         gc.drawText(scoreString, (StartWindow.WIDTH - size.x) / 3, (StartWindow.HEIGHT - size.y) / 2 );
+        gc.drawText(helpString, (StartWindow.WIDTH - size.x) / 3, (StartWindow.HEIGHT - size.y) *3 / 4);
+
+        font.dispose();
+        color.dispose();
+
+        display.timerExec(-1, runnable);
+    }
+
+    private void waitPlayerUI(Event e) {
+        GC gc = e.gc;
+
+        String msg = "Please wait";
+//        int score  = ((Pacman)elements.get(0)).getScore();
+//        String scoreString = "Score: " + score;
+
+        String helpString = "Waiting another player";
+
+        Font font = new Font(e.display, "Helvetica", 18, SWT.NORMAL);
+        Color color = new Color(e.display, 255, 255, 255);
+        setBackground(display.getSystemColor(SWT.COLOR_BLACK));
+        gc.setForeground(color);
+        gc.setFont(font);
+
+        Point size = gc.textExtent(msg);
+
+        gc.drawText(msg, (StartWindow.WIDTH - size.x) / 3, (StartWindow.HEIGHT - size.y) / 4);
+//        gc.drawText(scoreString, (StartWindow.WIDTH - size.x) / 3, (StartWindow.HEIGHT - size.y) / 2 );
         gc.drawText(helpString, (StartWindow.WIDTH - size.x) / 3, (StartWindow.HEIGHT - size.y) *3 / 4);
 
         font.dispose();

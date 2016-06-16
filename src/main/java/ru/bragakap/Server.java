@@ -37,6 +37,10 @@ public class Server {
         outToClient.writeObject(scoreInfoDTO);
     }
 
+    public void sendMsg(String msg) throws IOException {
+        outToClient.writeObject(msg);
+    }
+
     public void close() throws IOException {
         connectionSocket.close();
     }

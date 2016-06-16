@@ -36,6 +36,10 @@ public class Client {
         return (GameScoreInfoDTO) inFromServer.readObject();
     }
 
+    public String getMsg() throws IOException, ClassNotFoundException {
+        return (String) inFromServer.readObject();
+    }
+
     public void close() throws IOException {
         clientSocket.close();
     }
