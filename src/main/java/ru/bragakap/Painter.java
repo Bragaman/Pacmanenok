@@ -169,7 +169,7 @@ public class Painter extends Canvas {
         }
         int score  = ((Pacman)elements.get(poz)).getScore();
         String scoreString = "Score: " + score;
-        gc.drawText(scoreString, 5, 5 );
+        gc.drawText(scoreString, 5, 5);
     }
 
     /**

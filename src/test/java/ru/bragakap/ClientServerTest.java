@@ -72,6 +72,25 @@ public class ClientServerTest {
         assertEquals(info, client.getGameInfo());
         client.sendPacman(pacman);
         assertEquals(server.getPacmanInfo(), pacman);
+
+        GameScoreInfoDTO gameScoreInfoDTO = new GameScoreInfoDTO(12, 42);
+
+        server.sendScore(gameScoreInfoDTO);
+        assertEquals(gameScoreInfoDTO, client.getScore());
+
+        pacman = new Pacman();
+        pacman.setX(42);
+        pacman.setY(39);
+
+        list = new ArrayList<>();
+
+        list.add(pacman);
+        //info = new GameInfoDTO(true, list);
+        server.sendObj(list);
+
+        assertEquals(list, (List<BaseElement>) client.getObj());
+        client.sendPacman(pacman);
+        assertEquals(server.getPacmanInfo(), pacman);
     }
 
     @Test

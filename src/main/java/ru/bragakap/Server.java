@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Objects;
 
 public class Server {
     private Socket connectionSocket;
@@ -43,6 +44,14 @@ public class Server {
 
     public String getMsg() throws IOException, ClassNotFoundException {
         return (String) inFromClient.readObject();
+    }
+
+    public void sendObj(Object obj) throws IOException {
+        outToClient.writeObject(obj);
+    }
+
+    public Object getObj() throws IOException, ClassNotFoundException {
+        return inFromClient.readObject();
     }
 
     public void close() throws IOException {

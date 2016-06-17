@@ -89,8 +89,8 @@ public class Core {
 //                pacman.setX(x);
             client.sendPacman(pacman);
             info = client.getGameInfo();
+            System.out.println(info.getElements().get(0).getX());
             elements = info.getElements();
-//            System.out.println(info.getElements().size());
         }
         if (!info.isInGame())
             closeMultGame();
