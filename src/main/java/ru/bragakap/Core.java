@@ -13,8 +13,8 @@ public class Core {
     public static Core getInstance() {
         return ourInstance;
     }
-    public final static int xCount = 15;
-    public final static int yCount = 15;
+    public final static int xCount = 20;
+    public final static int yCount = 20;
 
     private boolean connectingNow = false;
 
@@ -62,7 +62,7 @@ public class Core {
         server = new Server();
         server.openConnection(6789);
         eventLooper = new EventLooper();
-        eventLooper.setElements(MapGenerator.generateMap(2, 20, xCount, yCount));
+        eventLooper.setElements(MapGenerator.generateMap(2, 5, xCount, yCount));
         eventLooper.setCountOfPlayers(2);
         server.sendMap(eventLooper.getElements());
 //        server.sendGameInfo(new GameInfoDTO(true, eventLooper.getElements()));

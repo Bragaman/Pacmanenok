@@ -25,7 +25,7 @@ public class EventLooper {
         if (countOfPlayers == 2) {
             try {
                 elements.set(1, Core.getInstance().getServer().getPacmanInfo());
-                elements.get(1).move();
+//                elements.get(1).move();
             } catch (IOException | ClassNotFoundException e) {
                 return true; //TODO why????
             }

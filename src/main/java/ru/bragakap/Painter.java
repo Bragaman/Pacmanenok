@@ -168,8 +168,13 @@ public class Painter extends Canvas {
             element.paintMe(gc);
         }
         int score  = ((Pacman)elements.get(poz)).getScore();
-        String scoreString = "Score: " + score;
+        String scoreString = "Your score: " + score;
         gc.drawText(scoreString, 5, 5);
+
+        int scoreEnemy  = ((Pacman)elements.get((poz+1) %2)).getScore();
+        String scoreStringEnemy = "Enemy score: " + scoreEnemy;
+        gc.drawText(scoreStringEnemy, 5 + 120, 5);
+
     }
 
     /**
@@ -180,8 +185,8 @@ public class Painter extends Canvas {
         GC gc = e.gc;
 
         String msg = "Game Over";
-        int score  = ((Pacman)elements.get(0)).getScore();
-        String scoreString = "Score: " + score;
+        int score  = ((Pacman)elements.get(poz)).getScore();
+        String scoreString = "You score: " + score;
 
         String helpString = "For start new game press \"Space\"";
 

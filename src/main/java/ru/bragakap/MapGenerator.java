@@ -22,7 +22,7 @@ public class MapGenerator {
 
         for(int i=0; i < countOfPlayer; ++i) {
             Pacman player = new Pacman();
-            player.setDisplayColor();
+            player.setColor(0, (130+75*(i)) % 255, 0);
             player.setHeight(SIZE_OBJ / 3 * 2);
             player.setWidth(SIZE_OBJ / 3 * 2);
             player.setY(75 * (i+1));
