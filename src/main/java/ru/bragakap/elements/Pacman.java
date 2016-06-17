@@ -1,18 +1,32 @@
-package ru.bragakap;
+package ru.bragakap.elements;
 
 import java.util.Objects;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.widgets.Display;
+import ru.bragakap.BonusManager;
 
 /**
  * Created by Kapitonenko on 15.01.16.
  */
-public class Pacman extends BaseElement{
-    public Pacman() {
+public class Pacman extends BaseElement {
+
+    static {
+        nameOfObject = "pacman";
+    }
+
+    private BonusManager bonusManager = new BonusManager();
+
+    public Pacman(Integer x, Integer y) {
+        super(x, y);
         setSpeed(1);
+
+    }
+
+    public BonusManager getBonusManager() {
+        return bonusManager;
+    }
+
+    public void setBonusManager(BonusManager bonusManager) {
+        this.bonusManager = bonusManager;
     }
 
     public void setDisplayColor() {
@@ -32,8 +46,10 @@ public class Pacman extends BaseElement{
 
     @Override
     public void move() {
-        if(this.isExist())
+        if(this.isExist()) {
             super.move();
+            bonusManager.tick();
+        }
     }
 
     @Override
@@ -42,6 +58,11 @@ public class Pacman extends BaseElement{
             super.paintMe(gc);
     }
 
+    @Override
+    public void die() {
+        super.die();
+        bonusManager.deathOfPacman();
+    }
 
     public void incScore() {
         score++;

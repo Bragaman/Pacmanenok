@@ -1,7 +1,8 @@
 package ru.bragakap;
 
-import org.junit.Assert;
 import org.testng.annotations.Test;
+import ru.bragakap.elements.Ghost;
+import ru.bragakap.elements.Pacman;
 
 
 import static org.testng.Assert.*;
@@ -10,8 +11,8 @@ public class GhostTest {
 
     @Test
     public void testIntersection() throws Exception {
-        Pacman pacman = new Pacman();
-        Ghost ghost = new Ghost();
+        Pacman pacman = new Pacman(0, 0);
+        Ghost ghost = new Ghost(0, 0);
 
         ghost.intersection(pacman);
         assertFalse(pacman.isExist());
@@ -19,9 +20,7 @@ public class GhostTest {
 
     @Test
     public void testMove() throws Exception {
-        Ghost ghost = new Ghost();
-        ghost.setX(500);
-        ghost.setY(500);
+        Ghost ghost = new Ghost(500, 500);
 
         Integer maxVx = 0;
         Integer minVx = 0;

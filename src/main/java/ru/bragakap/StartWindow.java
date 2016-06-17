@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import java.io.IOException;
+import ru.bragakap.util.Settings;
 
 /**
  * Created by dmitry on 12.01.16.
@@ -89,7 +90,7 @@ public class StartWindow {
      * Функция установаливает заголовок, размеры и гнепосредственно показывает окно
      */
     void showWindow() {
-        startWindow.setText("ru.bragakap.Pacman");
+        startWindow.setText("Pacman");
 
         setSize();
 
@@ -131,6 +132,11 @@ public class StartWindow {
 
 
     public static void main(String[] args) {
+        if(args.length > 0) {
+            Settings.initSettings(args[0]);
+        } else {
+            Settings.initSettings(null);
+        }
         Display display = new Display();
         StartWindow startWindow = new StartWindow(display);
         display.dispose();

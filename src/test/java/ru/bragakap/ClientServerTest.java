@@ -6,6 +6,12 @@ import java.util.List;
 import org.testng.annotations.AfterGroups;
 import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.Test;
+import ru.bragakap.dto.GameInfoDTO;
+import ru.bragakap.dto.GameScoreInfoDTO;
+import ru.bragakap.elements.BaseElement;
+import ru.bragakap.elements.Food;
+import ru.bragakap.elements.Pacman;
+import ru.bragakap.exceptions.ServerNotFoundException;
 
 
 import static org.testng.Assert.assertEquals;
@@ -16,26 +22,11 @@ public class ClientServerTest {
     Client client;
 
     @BeforeGroups(groups = "ClientServerTests")
-    private void setUp() throws InterruptedException, IOException, ClassNotFoundException {
+    private void setUp() throws Exception {
         server = new Server();
         client = new Client();
 
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    server.openConnection(6789);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        thread.start();
-        Thread.sleep(100);
-        client.open("localhost", 6789);
-        server.sendMsg("test");
-        System.out.print(client.getMsg());
+        openConnections(6789);
     }
 
     @AfterGroups(groups = "ClientServerTests")
@@ -45,47 +36,22 @@ public class ClientServerTest {
 
     @Test
     public void testSendGetPacman() throws Exception {
-        Pacman pacman = new Pacman();
-        pacman.setX(42);
-        pacman.setY(42);
+        Pacman pacman = new Pacman(42, 42);
         client.sendPacman(pacman);
         assertEquals(pacman, server.getPacmanInfo());
     }
 
     @Test
     public void testSendGetMap() throws Exception {
-        Pacman pacman = new Pacman();
-        pacman.setX(42);
-        pacman.setY(42);
+        Pacman pacman = new Pacman(42, 42);
 
-        Food food = new Food();
-        food.setX(23);
-        food.setY(23);
+        Food food = new Food(23, 23);
 
         List<BaseElement> list = new ArrayList<>();
 
         list.add(pacman);
         list.add(food);
         GameInfoDTO info = new GameInfoDTO(true, list);
-        server.sendGameInfo(info);
-
-        assertEquals(info, client.getGameInfo());
-        client.sendPacman(pacman);
-        assertEquals(server.getPacmanInfo(), pacman);
-
-        pacman = new Pacman();
-        pacman.setX(42);
-        pacman.setY(41);
-
-        food = new Food();
-        food.setX(23);
-        food.setY(23);
-
-        list = new ArrayList<>();
-
-        list.add(pacman);
-        list.add(food);
-        info = new GameInfoDTO(true, list);
         server.sendGameInfo(info);
 
         assertEquals(info, client.getGameInfo());
@@ -105,5 +71,22 @@ public class ClientServerTest {
     public void testConnection() throws Exception {
         client.sendMsg("connected");
         System.out.print(server.getMsg());
+    }
+
+    private void openConnections(int port) throws InterruptedException, ServerNotFoundException, IOException, ClassNotFoundException {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    server.openConnection(port);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        thread.start();
+        Thread.sleep(100);
+        client.open("localhost", port);
     }
 }

@@ -2,6 +2,14 @@ package ru.bragakap;
 
 import java.util.ArrayList;
 import java.util.List;
+import ru.bragakap.elements.Aegis;
+import ru.bragakap.elements.BaseElement;
+import ru.bragakap.elements.Feeder;
+import ru.bragakap.elements.Food;
+import ru.bragakap.elements.Ghost;
+import ru.bragakap.elements.Imp;
+import ru.bragakap.elements.Pacman;
+import ru.bragakap.elements.Wall;
 
 /**
  * Created by Kapitonenko (Щечки) on 25.12.15.
@@ -21,23 +29,15 @@ public class MapGenerator {
         int sizeFood = 5;
 
         for(int i=0; i < countOfPlayer; ++i) {
-            Pacman player = new Pacman();
-            player.setColor(0, (130+75*(i)) % 255, 0);
-            player.setHeight(SIZE_OBJ / 3 * 2);
-            player.setWidth(SIZE_OBJ / 3 * 2);
-            player.setY(75 * (i+1));
-            player.setX(75 * (i+1));
+            Pacman player = new Pacman(75 * (i+1), 75 * (i+1));
+            player.setColor(0, (130 + 75 * (i)) % 255, 0);
             list.add( player);
         }
 
         for(int i = 1; i < mapX - 1; i++) {
             for(int j = 1; j < mapY - 1; j++) {
-                Food food = new Food();
+                Food food = new Food(i * SIZE_OBJ + SIZE_OBJ/2 - sizeFood/2, j * SIZE_OBJ + SIZE_OBJ/2 - sizeFood/2);
                 food.setDisplayColor();
-                food.setHeight(sizeFood);
-                food.setWidth(sizeFood);
-                food.setY(j * SIZE_OBJ + SIZE_OBJ/2 - sizeFood/2);
-                food.setX(i * SIZE_OBJ + SIZE_OBJ/2 - sizeFood/2);
                 list.add(food);
             }
         }
@@ -45,13 +45,18 @@ public class MapGenerator {
         createMaze(list);
 
         for(int i = 0; i < countOfGhost; i++) {
-            Ghost ghost = new Ghost();
-            ghost.setHeight(SIZE_OBJ);
-            ghost.setWidth(SIZE_OBJ);
-            ghost.setY(mapY / 2 * SIZE_OBJ);
-            ghost.setX(mapY / 2 * SIZE_OBJ);
+            Ghost ghost = new Ghost(mapX / 2 * SIZE_OBJ, mapY / 2 * SIZE_OBJ);
             list.add(ghost);
         }
+
+        Imp imp = new Imp(mapX / 2 * SIZE_OBJ, mapY / 2 * SIZE_OBJ);
+        list.add(imp);
+
+        Feeder feeder = new Feeder(mapX / 2 * SIZE_OBJ, mapY / 2 * SIZE_OBJ);
+        list.add(feeder);
+
+        Aegis aegis = new Aegis(50, 50);
+        list.add(aegis);
 
         return list;
     }
@@ -67,35 +72,19 @@ public class MapGenerator {
      */
     public static void createRoom(int x, int y, int width, int height, int wallSize, List<BaseElement> list) {
         for(int i = x; i <x + width + 1; i++) {
-            Wall wall = new Wall();
-            wall.setHeight(wallSize);
-            wall.setWidth(wallSize);
-            wall.setY(y * wallSize);
-            wall.setX(i * wallSize);
+            Wall wall = new Wall(i * wallSize, y * wallSize);
             list.add(wall);
         }
         for(int i = x; i < x + width + 1; i++) {
-            Wall wall = new Wall();
-            wall.setHeight(wallSize);
-            wall.setWidth(wallSize);
-            wall.setY((y  + height) * wallSize);
-            wall.setX(i * wallSize);
+            Wall wall = new Wall(i * wallSize, (y  + height) * wallSize);
             list.add(wall);
         }
         for(int i = (y); i < y + (height); i++) {
-            Wall wall = new Wall();
-            wall.setHeight(wallSize);
-            wall.setWidth(wallSize);
-            wall.setY(i * wallSize);
-            wall.setX(x * wallSize);
+            Wall wall = new Wall(x * wallSize, i * wallSize);
             list.add(wall);
         }
         for(int i = (y); i < y + (height); i++) {
-            Wall wall = new Wall();
-            wall.setHeight(wallSize);
-            wall.setWidth(wallSize);
-            wall.setY(i * wallSize);
-            wall.setX((x + width) * wallSize);
+            Wall wall = new Wall((x + width) * wallSize, i * wallSize);
             list.add(wall);
         }
     }

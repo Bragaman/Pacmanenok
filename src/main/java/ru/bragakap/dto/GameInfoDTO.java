@@ -1,8 +1,9 @@
-package ru.bragakap;
+package ru.bragakap.dto;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import ru.bragakap.elements.BaseElement;
 
 /**
  * Created by dmbragin on 16/06/16.

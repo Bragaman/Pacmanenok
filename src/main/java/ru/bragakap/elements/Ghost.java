@@ -1,16 +1,18 @@
-package ru.bragakap;
+package ru.bragakap.elements;
 
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Device;
-import org.eclipse.swt.widgets.Display;
+import ru.bragakap.StartWindow;
 
 /**
  * Created by dmitry on 15.01.16.
  */
 
 public class Ghost extends BaseElement {
-    public Ghost() {
-        super();
+    static {
+        nameOfObject = "ghost";
+    }
+
+    public Ghost(Integer x, Integer y) {
+        super(x, y);
         setColor(255, 0, 0);
     }
 

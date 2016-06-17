@@ -5,6 +5,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
+import ru.bragakap.dto.GameInfoDTO;
+import ru.bragakap.dto.GameScoreInfoDTO;
+import ru.bragakap.elements.BaseElement;
+import ru.bragakap.elements.Pacman;
+import ru.bragakap.exceptions.ServerNotFoundException;
 
 public class Client {
     private Socket clientSocket = null;
@@ -12,9 +17,12 @@ public class Client {
     private ObjectOutputStream outToServer = null;
     private ObjectInputStream inFromServer = null;
 
-    public void open(String ip, int port) throws IOException, ClassNotFoundException {
+    public void open(String ip, int port) throws IOException, ClassNotFoundException, ServerNotFoundException {
         System.out.println("client Open");
         Socket clientSocket = new Socket(ip, port);
+        if(clientSocket == null) {
+            throw new ServerNotFoundException();
+        }
 
         outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
         inFromServer = new ObjectInputStream(clientSocket.getInputStream());

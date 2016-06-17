@@ -1,7 +1,10 @@
 package ru.bragakap;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import ru.bragakap.elements.BaseElement;
+import ru.bragakap.elements.Pacman;
 
 public class EventLooper {
     public void setElements(List<BaseElement> elements) {
@@ -38,11 +41,11 @@ public class EventLooper {
             for (int i = countOfPlayers; i < elements.size(); i++) {
                 if (elements.get(i).isInside(player)) {
                     elements.get(i).intersection(player);
-//                    System.out.print("asd");
-                    if (!elements.get(i).isExist() && elements.get(i) instanceof Food) {
-                        elements.remove(i);
-                        i--;
-                    }
+                }
+
+                if (!elements.get(i).isExist() && !(elements.get(i) instanceof Pacman)) {
+                    elements.remove(i);
+                    i--;
                 }
             }
         }
@@ -51,9 +54,13 @@ public class EventLooper {
             inGame = false;
         }
 
+        List<BaseElement> tempElements = new ArrayList<>();
         for(BaseElement i : elements) {
             i.move();
+            i.turn(tempElements);
         }
+        elements.addAll(tempElements);
+
         if (countOfPlayers == 2) {
             try {
                 Core.getInstance().getServer().sendInGameInfo(inGame);

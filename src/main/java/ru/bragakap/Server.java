@@ -3,20 +3,29 @@ package ru.bragakap;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import ru.bragakap.dto.GameInfoDTO;
+import ru.bragakap.dto.GameScoreInfoDTO;
+import ru.bragakap.elements.BaseElement;
+import ru.bragakap.elements.Pacman;
 
 public class Server {
     private Socket connectionSocket;
+    private ServerSocket welcomeSocket;
 
     private ObjectOutputStream outToClient = null;
     private ObjectInputStream inFromClient = null;
 
 
     public void openConnection(int port) throws IOException {
+        System.setProperty("sun.net.useExclusiveBind", "false");
         System.out.println("Server start");
-        ServerSocket welcomeSocket = new ServerSocket(port);
+        welcomeSocket = new ServerSocket();
+        welcomeSocket.setReuseAddress(true);
+        welcomeSocket.bind(new InetSocketAddress(port));
 //
 //        while(true)
 //        {
@@ -71,5 +80,6 @@ public class Server {
 
     public void close() throws IOException {
         connectionSocket.close();
+        welcomeSocket.close();
     }
 }

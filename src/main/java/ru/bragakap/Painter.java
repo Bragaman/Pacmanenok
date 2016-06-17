@@ -9,6 +9,10 @@ import org.eclipse.swt.widgets.*;
 
 import java.io.IOException;
 import java.util.List;
+import ru.bragakap.dto.GameInfoDTO;
+import ru.bragakap.elements.BaseElement;
+import ru.bragakap.elements.Pacman;
+import ru.bragakap.exceptions.ServerNotFoundException;
 
 
 /**
@@ -105,6 +109,8 @@ public class Painter extends Canvas {
             System.out.println("Set start map");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (ServerNotFoundException e) {
+            //TODO окошко "сервер не найден"
         }
         System.out.println("Can start draw");
         waitConnection = false;

@@ -1,6 +1,8 @@
 package ru.bragakap;
 
 import org.testng.annotations.Test;
+import ru.bragakap.elements.BaseElement;
+import ru.bragakap.elements.Pacman;
 
 
 import static org.testng.Assert.*;
@@ -77,7 +79,7 @@ public class BaseElementTest {
     }
 
     private BaseElement createBaseElement() {
-        return new BaseElement() {
+        return new BaseElement(0, 0) {
             @Override
             public void intersection(Pacman player) {
 

@@ -1,14 +1,15 @@
-package ru.bragakap;
-
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Device;
-import org.eclipse.swt.widgets.Display;
+package ru.bragakap.elements;
 
 /**
  * Created by dmitry on 15.01.16.
  */
 public class Food extends BaseElement {
-    public Food() {
+    static {
+        nameOfObject = "food";
+    }
+
+    public Food(Integer x, Integer y) {
+        super(x, y);
     }
 
     public void setDisplayColor() {

@@ -1,11 +1,14 @@
-package ru.bragakap;
+package ru.bragakap.elements;
 
 import java.io.Serializable;
+import java.nio.channels.SelectionKey;
+import java.util.List;
 import java.util.Objects;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Display;
+import ru.bragakap.util.Settings;
 
 /**
  * Created by Kapitonenko on 15.01.16.
@@ -19,7 +22,15 @@ public abstract class BaseElement implements Serializable {
     private int colorG;
     private int colorB;
 
+    protected static String nameOfObject;
 
+    public BaseElement(int x, int y) {
+        this.x = x;
+        this.y = y;
+
+        width = Integer.parseInt(Settings.getProperty(String.format("%s.width", nameOfObject)));
+        height = Integer.parseInt(Settings.getProperty(String.format("%s.height", nameOfObject)));
+    }
 
     public void paintMe(GC gc) {
         Device device = Display.getCurrent();
@@ -77,6 +88,8 @@ public abstract class BaseElement implements Serializable {
         exist = false;
     }
 
+    public void ressurect() {exist = true;}
+
     public void setImage(String image) {
         this.image = image;
     }
@@ -114,7 +127,7 @@ public abstract class BaseElement implements Serializable {
     }
 
     public boolean isInside(BaseElement el) {
-//        if(this instanceof ru.bragakap.Food)
+//        if(this instanceof ru.bragakap.elements.Food)
 //            System.out.print(el.getWidth() + " " + el.getHeight() + " " + this.x + " " + this.y + "\n");
         if(el.x >= this.x && el.x <= this.x + this.width && el.y >= this.y && el.y <= this.y + this.height)
             return true;
@@ -143,6 +156,10 @@ public abstract class BaseElement implements Serializable {
     public void move() {
         x += vx;
         y += vy;
+    }
+
+    public void turn(List<BaseElement> elements) {
+
     }
 
 

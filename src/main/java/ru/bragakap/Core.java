@@ -2,7 +2,10 @@ package ru.bragakap;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
+import ru.bragakap.dto.GameInfoDTO;
+import ru.bragakap.elements.BaseElement;
+import ru.bragakap.elements.Pacman;
+import ru.bragakap.exceptions.ServerNotFoundException;
 
 /**
  * Created by dmbragin on 16/06/16.
@@ -33,7 +36,7 @@ public class Core {
         }
     }
 
-    public void initMultGame(int index) throws IOException, ClassNotFoundException {
+    public void initMultGame(int index) throws IOException, ClassNotFoundException, ServerNotFoundException {
 
         if (!connectingNow) {
             connectingNow = true;
@@ -68,7 +71,7 @@ public class Core {
 //        server.sendGameInfo(new GameInfoDTO(true, eventLooper.getElements()));
     }
 
-    private void initClientPlayer() throws IOException, ClassNotFoundException {
+    private void initClientPlayer() throws IOException, ClassNotFoundException, ServerNotFoundException {
         client = new Client();
         client.open("localhost", 6789);
 //        GameInfoDTO info = client.getGameInfo();
