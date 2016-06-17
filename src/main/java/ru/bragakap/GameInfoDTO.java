@@ -10,7 +10,6 @@ import java.util.Objects;
 public class GameInfoDTO implements Serializable {
     private List<BaseElement> elements;
     private boolean inGame;
-
     public List<BaseElement> getElements() {
         return elements;
     }

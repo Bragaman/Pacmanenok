@@ -59,6 +59,16 @@ public class Painter extends Canvas {
         });
     }
 
+    private void playGame() {
+        try {
+            GameInfoDTO info = Core.getInstance().makeStepAction();
+            elements = info.getElements();
+            inGame = info.isInGame();
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Запуск игры
@@ -74,16 +84,7 @@ public class Painter extends Canvas {
             @Override
             public void run() {
                 if (!waitConnection) {
-                    if (inGame) {
-                        try {
-                            GameInfoDTO info = Core.getInstance().makeStepAction();
-                            elements = info.getElements();
-                            inGame = info.isInGame();
-
-                        } catch (IOException | ClassNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    if (inGame) playGame();
                 }
                 display.timerExec(DELAY, this);
                 redraw();
@@ -100,7 +101,6 @@ public class Painter extends Canvas {
         try {
             Core.getInstance().initMultGame(poz);
             System.out.println("finish init multGame settings");
-//            GameInfoDTO info = Core.getInstance().makeStepAction();
             elements = Core.getInstance().getElements(poz);
             System.out.println("Set start map");
         } catch (IOException | ClassNotFoundException e) {

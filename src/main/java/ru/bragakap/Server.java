@@ -5,7 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Objects;
+import java.util.List;
 
 public class Server {
     private Socket connectionSocket;
@@ -31,14 +31,28 @@ public class Server {
     }
 
     public void sendGameInfo(GameInfoDTO info) throws IOException {
+        System.out.println(info.getElements().size());
+        outToClient.reset();
         outToClient.writeObject(info);
     }
 
+    public void sendMap(List<BaseElement> map) throws IOException {
+        outToClient.reset();
+        outToClient.writeObject(map);
+    }
+
+    public void sendInGameInfo(boolean inGame) throws IOException {
+        outToClient.reset();
+        outToClient.writeObject(inGame);
+    }
+
     public void sendScore(GameScoreInfoDTO scoreInfoDTO) throws IOException {
+        outToClient.reset();
         outToClient.writeObject(scoreInfoDTO);
     }
 
     public void sendMsg(String msg) throws IOException {
+        outToClient.reset();
         outToClient.writeObject(msg);
     }
 
@@ -47,6 +61,7 @@ public class Server {
     }
 
     public void sendObj(Object obj) throws IOException {
+        outToClient.reset();
         outToClient.writeObject(obj);
     }
 

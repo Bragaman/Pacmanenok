@@ -52,7 +52,7 @@ public class Core {
             server = null; //TODO can I write so?
          }
         if (client != null) {
-            client.close();
+//            client.close();
             client = null;
         }
         connectingNow = false;
@@ -62,35 +62,30 @@ public class Core {
         server = new Server();
         server.openConnection(6789);
         eventLooper = new EventLooper();
-        eventLooper.setElements(MapGenerator.generateMap(2, 0, xCount, yCount));
+        eventLooper.setElements(MapGenerator.generateMap(2, 20, xCount, yCount));
         eventLooper.setCountOfPlayers(2);
-        server.sendGameInfo(new GameInfoDTO(true, eventLooper.getElements()));
+        server.sendMap(eventLooper.getElements());
+//        server.sendGameInfo(new GameInfoDTO(true, eventLooper.getElements()));
     }
 
     private void initClientPlayer() throws IOException, ClassNotFoundException {
         client = new Client();
         client.open("localhost", 6789);
-        GameInfoDTO info = client.getGameInfo();
-        elements = info.getElements();
+//        GameInfoDTO info = client.getGameInfo();
+        elements = client.getMap();
     }
 
     public GameInfoDTO makeStepAction() throws IOException, ClassNotFoundException {
         GameInfoDTO info;
         if (eventLooper != null) {
-            // it is server
             boolean inGame = eventLooper.serverLoop();
             info =  new GameInfoDTO(inGame, eventLooper.getElements());
         } else {
-//            System.out.println(elements.get(indexClient).getVx());
             Pacman pacman = (Pacman) elements.get(indexClient);
-//            Random r = new Random();
-//            int x = r.nextInt(100);
-//            if (x%10 == 9)
-//                pacman.setX(x);
             client.sendPacman(pacman);
-            info = client.getGameInfo();
-            System.out.println(info.getElements().get(0).getX());
-            elements = info.getElements();
+            boolean inGame = client.getInGameInfo();
+            elements = client.getMap();
+            info = new GameInfoDTO(inGame, elements);
         }
         if (!info.isInGame())
             closeMultGame();
