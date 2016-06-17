@@ -56,8 +56,9 @@ public class EventLooper {
         }
         if (countOfPlayers == 2) {
             try {
-                System.out.println(elements.size());
-                Core.getInstance().getServer().sendGameInfo(new GameInfoDTO(inGame, elements));
+                Core.getInstance().getServer().sendInGameInfo(inGame);
+                Core.getInstance().getServer().sendMap( elements);
+
             } catch (IOException e) {
                 //Проблемы с соединением
                 return false;

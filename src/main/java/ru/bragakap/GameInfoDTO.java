@@ -11,7 +11,7 @@ public class GameInfoDTO implements Serializable {
     private List<BaseElement> elements;
     private boolean inGame;
 
-    private static final long serialVersionUID = 1L;
+//    private static final long serialVersionUID = 1L;
 
     public List<BaseElement> getElements() {
         return elements;

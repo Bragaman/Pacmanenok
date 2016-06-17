@@ -72,6 +72,7 @@ public class ClientServerTest {
         assertEquals(info, client.getGameInfo());
         client.sendPacman(pacman);
         assertEquals(server.getPacmanInfo(), pacman);
+
     }
 
     @Test

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
 
 public class Client {
     private Socket clientSocket = null;
@@ -20,6 +21,22 @@ public class Client {
         System.out.println("client connected");
     }
 
+    public List<BaseElement> getMap() throws IOException, ClassNotFoundException {
+        Object ans = inFromServer.readObject();
+        if(ans == null) {
+            return null;
+        }
+        return (List<BaseElement>) ans;
+    }
+
+    public boolean getInGameInfo() throws IOException, ClassNotFoundException {
+        Object ans = inFromServer.readObject();
+        if(ans == null) {
+            return false;
+        }
+        return (boolean) ans;
+    }
+
     public void sendPacman(Pacman pacman) throws IOException {
         outToServer.writeObject(pacman);
     }
@@ -29,7 +46,10 @@ public class Client {
         if(ans == null) {
             return null;
         }
-        return (GameInfoDTO) ans;
+        GameInfoDTO info = (GameInfoDTO) ans;
+        System.out.println(info.getElements().size());
+
+        return info;
     }
 
     public GameScoreInfoDTO getScore() throws IOException, ClassNotFoundException {

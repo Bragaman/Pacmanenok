@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 
 public class Server {
     private Socket connectionSocket;
@@ -30,7 +31,16 @@ public class Server {
     }
 
     public void sendGameInfo(GameInfoDTO info) throws IOException {
+        System.out.println(info.getElements().size());
         outToClient.writeObject(info);
+    }
+
+    public void sendMap(List<BaseElement> map) throws IOException {
+        outToClient.writeObject(map);
+    }
+
+    public void sendInGameInfo(boolean inGame) throws IOException {
+        outToClient.writeObject(inGame);
     }
 
     public void sendScore(GameScoreInfoDTO scoreInfoDTO) throws IOException {
