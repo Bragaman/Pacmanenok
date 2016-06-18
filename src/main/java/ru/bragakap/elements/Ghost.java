@@ -7,12 +7,14 @@ import ru.bragakap.StartWindow;
  */
 
 public class Ghost extends BaseElement {
-    static {
-        nameOfObject = "ghost";
-    }
 
     public Ghost(Integer x, Integer y) {
-        super(x, y);
+        super(x, y, "ghost");
+        setColor(255, 0, 0);
+    }
+
+    public Ghost(Integer x, Integer y, String nameOfObject) {
+        super(x, y, nameOfObject);
         setColor(255, 0, 0);
     }
 

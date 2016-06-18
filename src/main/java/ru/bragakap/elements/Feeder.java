@@ -5,12 +5,9 @@ import java.util.List;
 public class Feeder extends Ghost {
 
     private Integer timeoutOfFeed = 30;
-    static {
-        nameOfObject = "feeder";
-    }
 
     public Feeder(Integer x, Integer y) {
-        super(x, y);
+        super(x, y, "feeder");
         setColor(255, 255, 255);
     }
 

@@ -79,7 +79,7 @@ public class BaseElementTest {
     }
 
     private BaseElement createBaseElement() {
-        return new BaseElement(0, 0) {
+        return new BaseElement(0, 0, "Element") {
             @Override
             public void intersection(Pacman player) {
 

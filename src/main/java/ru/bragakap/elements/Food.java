@@ -4,12 +4,9 @@ package ru.bragakap.elements;
  * Created by dmitry on 15.01.16.
  */
 public class Food extends BaseElement {
-    static {
-        nameOfObject = "food";
-    }
 
     public Food(Integer x, Integer y) {
-        super(x, y);
+        super(x, y, "food");
     }
 
     public void setDisplayColor() {

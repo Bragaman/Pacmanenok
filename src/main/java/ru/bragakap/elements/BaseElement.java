@@ -22,9 +22,9 @@ public abstract class BaseElement implements Serializable {
     private int colorG;
     private int colorB;
 
-    protected static String nameOfObject;
+    protected String nameOfObject;
 
-    public BaseElement(int x, int y) {
+    public BaseElement(int x, int y, String nameOfObject) {
         this.x = x;
         this.y = y;
 

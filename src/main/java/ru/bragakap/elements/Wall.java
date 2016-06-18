@@ -9,12 +9,9 @@ import ru.bragakap.elements.Pacman;
  */
 
 public class Wall extends BaseElement {
-    static {
-        nameOfObject = "wall";
-    }
 
     public Wall(Integer x, Integer y) {
-        super(x, y);
+        super(x, y, "wall");
         setColor(144, 0, 144);
     }
 

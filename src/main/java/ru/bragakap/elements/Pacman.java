@@ -9,14 +9,10 @@ import ru.bragakap.BonusManager;
  */
 public class Pacman extends BaseElement {
 
-    static {
-        nameOfObject = "pacman";
-    }
-
     private BonusManager bonusManager = new BonusManager();
 
     public Pacman(Integer x, Integer y) {
-        super(x, y);
+        super(x, y, "pacman");
         setSpeed(1);
 
     }

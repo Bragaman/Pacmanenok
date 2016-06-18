@@ -8,9 +8,8 @@ import ru.bragakap.elements.Ghost;
 public class Imp extends Ghost {
     private Integer timeoutOfShoot = 10;
 
-    static {
-        nameOfObject = "imp";
-    }
+
+    protected String nameOfObject = "imp";
 
     public Imp(Integer x, Integer y) {
         super(x, y);

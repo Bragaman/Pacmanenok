@@ -5,12 +5,8 @@ import java.util.List;
 public class Fireball extends BaseElement {
     private Integer durationOfLive = 50;
 
-    static {
-        nameOfObject = "fireball";
-    }
-
     public Fireball(Integer x, Integer y) {
-        super(x, y);
+        super(x, y, "fireball");
         setDisplayColor();
 
         setVx((int) (Math.round(Math.random() * 2) - 2) * 2);
