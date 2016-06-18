@@ -45,6 +45,7 @@ public abstract class BaseElement implements Serializable {
         colorR = r;
     }
 
+
     public int getSpeed() {
         return speed;
     }

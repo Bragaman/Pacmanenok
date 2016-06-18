@@ -29,7 +29,7 @@ public class MapGenerator {
         int sizeFood = 5;
 
         for(int i=0; i < countOfPlayer; ++i) {
-            Pacman player = new Pacman(75 * (i+1), 75 * (i+1));
+            Pacman player = new Pacman(76 * (i+1), 76 * (i+1));
             player.setColor(0, (130 + 75 * (i)) % 255, 0);
             list.add( player);
         }

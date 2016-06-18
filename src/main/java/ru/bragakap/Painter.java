@@ -12,7 +12,6 @@ import java.util.List;
 import ru.bragakap.dto.GameInfoDTO;
 import ru.bragakap.elements.BaseElement;
 import ru.bragakap.elements.Pacman;
-import ru.bragakap.exceptions.ServerNotFoundException;
 
 
 /**
@@ -64,6 +63,7 @@ public class Painter extends Canvas {
     }
 
     private void playGame() {
+        System.out.println("play game func call");
         try {
             GameInfoDTO info = Core.getInstance().makeStepAction();
             elements = info.getElements();
@@ -84,25 +84,27 @@ public class Painter extends Canvas {
         waitConnection = true;
         inGame = true;
         startConnections();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (!waitConnection) {
-                    if (inGame) playGame();
-                }
-                display.timerExec(DELAY, this);
-                redraw();
-            }
-        };
-        display.timerExec(DELAY, runnable);
 
-        inGame = true;
-        redraw();
+        runnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (!waitConnection) {
+                        if (inGame) playGame();
+                    }
+                    display.timerExec(DELAY, this);
+                    redraw();
+                }
+            };
+            display.timerExec(DELAY, runnable);
+
+            inGame = true;
+            redraw();
 
     }
 
     private void startConnections() {
         waitConnection = false;
+        System.out.println("start init game");
         try {
             Core.getInstance().initMultGame(poz);
             System.out.println("finish init multGame settings");
@@ -112,13 +114,8 @@ public class Painter extends Canvas {
             e.printStackTrace();
             System.out.println("server not found");
             waitConnection = true;
-        } catch (ServerNotFoundException e) {
-            //TODO окошко "сервер не найден"
-            System.out.println("server not found ");
-            waitConnection = true;
         }
         System.out.println("Can start draw");
-
     }
 
     /**
@@ -139,9 +136,19 @@ public class Painter extends Canvas {
             ((Pacman)elements.get(poz)).moveDown();
         }
 
-        if(key == SWT.SPACE)
-            if(!inGame)
+        if(key == SWT.SPACE) {
+            if (!inGame)
                 startGame(poz);
+            if (waitConnection) {
+                try {
+                    Core.getInstance().closeMultGame();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+            }
+        }
+
 
 
     }
@@ -186,6 +193,12 @@ public class Painter extends Canvas {
         String scoreStringEnemy = "Enemy score: " + scoreEnemy;
         gc.drawText(scoreStringEnemy, 5 + 120, 5);
 
+        if (((Pacman)elements.get(poz)).hasBonuses() ) {
+            String bonusString = "IT IS SPAAAARTAAAAAA!!!!";
+            gc.drawText(bonusString, 5 + 220, 5);
+        }
+
+
     }
 
     /**
@@ -199,7 +212,7 @@ public class Painter extends Canvas {
         int score  = ((Pacman)elements.get(poz)).getScore();
         String scoreString = "You score: " + score;
 
-        String helpString = "For start new game press \"Space\"";
+        String helpString = " Wait server and for start new game press \"Space\"";
 
         Font font = new Font(e.display, "Helvetica", 18, SWT.NORMAL);
         Color color = new Color(e.display, 255, 255, 255);
@@ -222,11 +235,11 @@ public class Painter extends Canvas {
     private void drawWaitPlayer(Event e) {
         GC gc = e.gc;
 
-        String msg = "Please wait";
+        String msg = "No server found";
 //        int score  = ((Pacman)elements.get(0)).getScore();
 //        String scoreString = "Score: " + score;
 
-        String helpString = "Waiting another player";
+        String helpString = "Please restart application";
 
         Font font = new Font(e.display, "Helvetica", 18, SWT.NORMAL);
         Color color = new Color(e.display, 255, 255, 255);

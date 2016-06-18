@@ -84,6 +84,8 @@ public class Pacman extends BaseElement {
         setVy(-1*getSpeed());
     }
 
+    public boolean hasBonuses() {return  bonusManager.hasBonuses();}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

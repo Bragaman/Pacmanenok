@@ -37,4 +37,8 @@ public class BonusManager implements Serializable {
             }
         }
     }
+
+    public boolean hasBonuses() {
+        return !activeBonuses.isEmpty();
+    }
 }

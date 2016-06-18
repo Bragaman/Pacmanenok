@@ -11,7 +11,6 @@ import ru.bragakap.dto.GameScoreInfoDTO;
 import ru.bragakap.elements.BaseElement;
 import ru.bragakap.elements.Food;
 import ru.bragakap.elements.Pacman;
-import ru.bragakap.exceptions.ServerNotFoundException;
 
 
 import static org.testng.Assert.assertEquals;
@@ -73,7 +72,7 @@ public class ClientServerTest {
         System.out.print(server.getMsg());
     }
 
-    private void openConnections(int port) throws InterruptedException, ServerNotFoundException, IOException, ClassNotFoundException {
+    private void openConnections(int port) throws InterruptedException, IOException, ClassNotFoundException {
         Thread thread = new Thread() {
             @Override
             public void run() {
