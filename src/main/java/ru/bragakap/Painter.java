@@ -102,6 +102,7 @@ public class Painter extends Canvas {
     }
 
     private void startConnections() {
+        waitConnection = false;
         try {
             Core.getInstance().initMultGame(poz);
             System.out.println("finish init multGame settings");
@@ -109,11 +110,15 @@ public class Painter extends Canvas {
             System.out.println("Set start map");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+            System.out.println("server not found");
+            waitConnection = true;
         } catch (ServerNotFoundException e) {
             //TODO окошко "сервер не найден"
+            System.out.println("server not found ");
+            waitConnection = true;
         }
         System.out.println("Can start draw");
-        waitConnection = false;
+
     }
 
     /**

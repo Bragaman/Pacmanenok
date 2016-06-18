@@ -30,6 +30,7 @@ public abstract class BaseElement implements Serializable {
 
         width = Integer.parseInt(Settings.getProperty(String.format("%s.width", nameOfObject)));
         height = Integer.parseInt(Settings.getProperty(String.format("%s.height", nameOfObject)));
+        System.out.println(String.format("%s: %s %s", nameOfObject, width, height));
     }
 
     public void paintMe(GC gc) {
