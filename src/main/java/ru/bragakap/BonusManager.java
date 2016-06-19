@@ -1,11 +1,11 @@
 package ru.bragakap;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class BonusManager implements Serializable {
-    private Set<Bonus> activeBonuses = new HashSet<>();
+    private List<Bonus> activeBonuses = new ArrayList<>();
 
     private Integer timeOfBonus;
 
@@ -15,13 +15,15 @@ public class BonusManager implements Serializable {
     }
 
     public void tick() {
-        for(Bonus bonus : activeBonuses) {
+        Iterator<Bonus> iterator = activeBonuses.iterator();
+        while (iterator.hasNext()){
+            Bonus bonus = iterator.next();
             bonus.decrTime();
             if(bonus.isActive()) {
                 bonus.doOnTick();
             } else {
                 bonus.doAtEnd();
-                activeBonuses.remove(bonus);
+                iterator.remove();
             }
         }
     }

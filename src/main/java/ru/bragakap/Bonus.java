@@ -1,6 +1,8 @@
 package ru.bragakap;
 
 import java.io.Serializable;
+import java.util.Objects;
+
 import ru.bragakap.elements.Pacman;
 
 public class Bonus implements Serializable {
